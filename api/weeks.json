@@ -1,35 +1,57 @@
 [
     {
         "year": 2014,
-        "week": 22,
+        "number": 22,
         "tasks": [
             {
+                "id": 1,
                 "name": "MüsFrü",
                 "goal": 4,
-                "days": [
-                    {"day": 2},
-                    {"day": 3}
-                ]
+                "achievedDays": {
+                    "day2": true,
+                    "day3": true
+                },
+                "feasibleDays": {
+                    "day1": true,
+                    "day2": true,
+                    "day3": true,
+                    "day4": true,
+                    "day5": true
+                }
             },
             {
+                "id": 2,
                 "name": "LoCa",
                 "goal": 1,
-                "days": [
-                ]
+                "achievedDays": {
+                },
+                "feasibleDays": {
+                }
             },
             {
+                "id": 3,
                 "name": "Kraf",
                 "goal": 2,
-                "days": [
-                    {"day": 3}
-                ]
+                "achievedDays": {
+                    "day3": true,
+                    "day4": true
+                },
+                "feasibleDays": {
+                    "day2": true,
+                    "day4": true
+                }
             },
             {
+                "id": 4,
                 "name": "Ausdaur",
                 "goal": 2,
-                "days": [
-                    {"day": 3}
-                ]
+                "achievedDays": {
+                    "day3": true
+                },
+                "feasibleDays": {
+                    "day6": true,
+                    "day0": true
+                }
             }
         ]
     }

@@ -1,0 +1,36 @@
+[
+    {
+        "year": 2014,
+        "week": 22,
+        "tasks": [
+            {
+                "name": "MüsFrü",
+                "goal": 4,
+                "days": [
+                    {"day": 2},
+                    {"day": 3}
+                ]
+            },
+            {
+                "name": "LoCa",
+                "goal": 1,
+                "days": [
+                ]
+            },
+            {
+                "name": "Kraf",
+                "goal": 2,
+                "days": [
+                    {"day": 3}
+                ]
+            },
+            {
+                "name": "Ausdaur",
+                "goal": 2,
+                "days": [
+                    {"day": 3}
+                ]
+            }
+        ]
+    }
+]

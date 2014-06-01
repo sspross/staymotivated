@@ -1,0 +1,8 @@
+table.table tr td div.hover-btn-group { display:none;}
+table.table tr:hover td div.hover-btn-group { display:inline-block;}
+table.table .state-col,
+table.table .day-col { width: 40px; text-align: center; }
+table.table .task-col { width: 250px; text-align: left; }
+table.table .goal-col { width: auto; text-align: left; }
+table.table td a { color: black; }
+table.table td { height: 40px; }

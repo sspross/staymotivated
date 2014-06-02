@@ -7,51 +7,51 @@
                 "id": 1,
                 "name": "MüsFrü",
                 "goal": 4,
-                "achievedDays": {
-                    "day2": true,
-                    "day3": true
-                },
-                "feasibleDays": {
-                    "day1": true,
-                    "day2": true,
-                    "day3": true,
-                    "day4": true,
-                    "day5": true
-                }
+                "achievedDays": [
+                    "day2",
+                    "day3"
+                ],
+                "feasibleDays": [
+                    "day1",
+                    "day2",
+                    "day3",
+                    "day4",
+                    "day5"
+                ]
             },
             {
                 "id": 2,
                 "name": "LoCa",
                 "goal": 1,
-                "achievedDays": {
-                },
-                "feasibleDays": {
-                }
+                "achievedDays": [
+                ],
+                "feasibleDays": [
+                ]
             },
             {
                 "id": 3,
                 "name": "Kraf",
                 "goal": 2,
-                "achievedDays": {
-                    "day3": true,
-                    "day4": true
-                },
-                "feasibleDays": {
-                    "day2": true,
-                    "day4": true
-                }
+                "achievedDays": [
+                    "day3",
+                    "day4"
+                ],
+                "feasibleDays": [
+                    "day2",
+                    "day4"
+                ]
             },
             {
                 "id": 4,
                 "name": "Ausdaur",
                 "goal": 2,
-                "achievedDays": {
-                    "day3": true
-                },
-                "feasibleDays": {
-                    "day6": true,
-                    "day0": true
-                }
+                "achievedDays": [
+                    "day3"
+                ],
+                "feasibleDays": [
+                    "day6",
+                    "day0"
+                ]
             }
         ]
     }

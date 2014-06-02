@@ -28,16 +28,35 @@ var StayMotivatedTable = React.createClass({
   cancelNewTask: function() {
     this.setState({newTask: null});
   },
+  handleDayClick: function(key, day) {
+    // TODO replace this part with server side update, not using setState and forceUpdate is evil
+    var task = this.state.week.tasks[key];
+    var dayIndex = jQuery.inArray(day, task.achievedDays);
+    if (dayIndex >= 0) {
+      task.achievedDays.splice(dayIndex, 1);
+    } else {
+      task.achievedDays.push(day);
+    }
+    this.forceUpdate();
+  },
   render: function() {
     var tasks = [];
     if (this.state.week) {
       var number = this.state.week.number;
       var year = this.state.week.year;
-      this.state.week.tasks.forEach(function(task) {
+      this.state.week.tasks.forEach(function(task, i) {
           var achieved = Object.keys(task.achievedDays).length;
           var completed = achieved >= task.goal ? true : false
-          tasks.push(<Task id={task.id} name={task.name} goal={task.goal} completed={completed} achieved={achieved} achievedDays={task.achievedDays} feasibleDays={task.feasibleDays} />);
-      });
+          tasks.push(<Task
+            key={i}
+            name={task.name}
+            goal={task.goal}
+            completed={completed}
+            achieved={achieved}
+            achievedDays={task.achievedDays}
+            feasibleDays={task.feasibleDays}
+            onDayClick={this.handleDayClick} />);
+      }.bind(this));
     }
     return (
       <table className="table table-striped table-bordered table-hover">
@@ -95,10 +114,10 @@ var Task = React.createClass({
   render: function() {
     var days = [];
     for (var i = 0; i <= 6; i++) {
-      var day = (i + 1) % 7;
-      var feasible = this.props.feasibleDays["day" + day] ? true : false;
-      var achieved = this.props.achievedDays["day" + day] ? true : false;
-      days.push(<Day taskId={this.props.id} day={day} feasible={feasible} achieved={achieved} />);
+      var day = "day" + (i + 1) % 7;
+      var feasible = jQuery.inArray(day, this.props.feasibleDays) >= 0 ? true : false;
+      var achieved = jQuery.inArray(day, this.props.achievedDays) >= 0 ? true : false;
+      days.push(<Day taskKey={this.props.key} day={day} feasible={feasible} achieved={achieved} onDayClick={this.props.onDayClick} />);
     };
     return (
       <tr>
@@ -119,12 +138,15 @@ var Task = React.createClass({
 
 
 var Day = React.createClass({
-  switchDay: function(target) {
-    console.log(this.props.taskId, this.props.day);
-  },
   render: function() {
+    var tdClass = this.props.feasible ? 'day-col info' : 'day-col';
+    var aClass = this.props.achieved ? 'glyphicon glyphicon-check' : 'glyphicon glyphicon-unchecked';
     return (
-      <td className={this.props.feasible ? 'day-col info' : 'day-col'}><a href="#" onClick={this.switchDay} role="button"><span className={this.props.achieved ? 'glyphicon glyphicon-check' : 'glyphicon glyphicon-unchecked'}></span></a></td>
+      <td className={tdClass}>
+        <a href="#" onClick={this.props.onDayClick.bind(null, this.props.taskKey, this.props.day)} role="button">
+          <span className={aClass}></span>
+        </a>
+      </td>
     );
   }
 });

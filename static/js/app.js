@@ -31,8 +31,9 @@ var StayMotivatedTable = React.createClass({
     // setInterval(this.loadFromServer, this.props.pollInterval);
   },
   addNewTask: function() {
-    if (this.state.newTask === null)
-      this.setState({newTask: <TaskForm onTaskCancel={this.cancelNewTask} onTaskSave={this.saveNewTask} />})
+    if (this.state.newTask === null) {
+      this.setState({newTask: <TaskForm onTaskCancel={this.cancelNewTask} onTaskSave={this.saveNewTask} />});
+    }
   },
   cancelNewTask: function() {
     this.setState({newTask: null});
@@ -59,17 +60,7 @@ var StayMotivatedTable = React.createClass({
       var number = this.state.week.number;
       var year = this.state.week.year;
       this.state.week.tasks.forEach(function(task, i) {
-          var achieved = Object.keys(task.achievedDays).length;
-          var completed = achieved >= task.goal ? true : false
-          tasks.push(<Task
-            key={i}
-            name={task.name}
-            goal={task.goal}
-            completed={completed}
-            achieved={achieved}
-            achievedDays={task.achievedDays}
-            feasibleDays={task.feasibleDays}
-            onDayClick={this.handleDayClick} />);
+          tasks.push(<Task key={i} name={task.name} goal={task.goal} achievedDays={task.achievedDays} feasibleDays={task.feasibleDays} onDayClick={this.handleDayClick} />);
       }.bind(this));
     }
     return (
@@ -126,7 +117,9 @@ var StayMotivatedTable = React.createClass({
 
 var Task = React.createClass({
   render: function() {
-    var overdone = this.props.completed && this.props.achievedDays.length > this.props.goal ? true : false;
+    var numAchieved = Object.keys(this.props.achievedDays).length;
+    var isCompleted = numAchieved >= this.props.goal ? true : false
+    var isOverdone = isCompleted && numAchieved > this.props.goal ? true : false;
     var days = [];
     WEEKDAYS.forEach(function(day) {
       var feasible = jQuery.inArray(day, this.props.feasibleDays) >= 0 ? true : false;
@@ -134,8 +127,8 @@ var Task = React.createClass({
       days.push(<Day taskKey={this.props.key} day={day} feasible={feasible} achieved={achieved} onDayClick={this.props.onDayClick} />);
     }.bind(this));
     return (
-      <tr className={this.props.completed ? "success" : ""}>
-        <td className="state-col"><span className={this.props.completed ? "glyphicon glyphicon-star" : "glyphicon glyphicon-star-empty"}></span></td>
+      <tr className={isCompleted ? "success" : ""}>
+        <td className="state-col"><span className={isCompleted ? "glyphicon glyphicon-star" : "glyphicon glyphicon-star-empty"}></span></td>
         <td>
           {this.props.name}
           <div className="pull-right btn-group hover-btn-group">
@@ -144,7 +137,7 @@ var Task = React.createClass({
           </div>
         </td>
         {days}
-        <td>{this.props.achieved} / {this.props.goal} <span className={overdone ? "glyphicon glyphicon-heart" : ""}></span></td>
+        <td>{numAchieved} / {this.props.goal} <span className={isOverdone ? "glyphicon glyphicon-heart" : ""}></span></td>
       </tr>
     );
   }

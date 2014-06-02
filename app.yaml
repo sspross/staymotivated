@@ -1,5 +1,5 @@
 application: sspross-staymo
-version: 1.0.1
+version: 1-0-beta
 runtime: python27
 api_version: 1
 threadsafe: yes

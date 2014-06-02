@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="/static/css/app.css" />
+    <script src="http://fb.me/react-0.10.0.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+{% endblock extra_head %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="app" class="table-responsive"></div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_footer %}
+    <script src="/static/libs/eternicode-bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="/static/js/app.js" type="text/jsx"></script>
+    <script type="text/jsx">
+       /** @jsx React.DOM */
+      React.renderComponent(
+        <StayMotivatedTable url="/api/weeks.json" pollInterval={2000} />,
+        document.getElementById('app')
+      );
+    </script>
+{% endblock extra_footer %}

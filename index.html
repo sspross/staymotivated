@@ -32,7 +32,7 @@
 
       <div class="row">
         <div class="col-lg-12">
-          <div id="staymotivated" class="table-responsive"></div>
+          <div id="app" class="table-responsive"></div>
         </div>
       </div>
 
@@ -41,6 +41,12 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="/static/libs/eternicode-bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     <script src="/static/js/app.js" type="text/jsx"></script>
-
+    <script type="text/jsx">
+       /** @jsx React.DOM */
+      React.renderComponent(
+        <StayMotivatedTable url="/api/weeks.json" pollInterval={2000} />,
+        document.getElementById('app')
+      );
+    </script>
   </body>
 </html>

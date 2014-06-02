@@ -187,9 +187,3 @@ var TaskForm = React.createClass({
     );
   }
 });
-
-
-React.renderComponent(
-  <StayMotivatedTable url="/api/weeks.json" pollInterval={2000} />,
-  document.getElementById('staymotivated')
-);

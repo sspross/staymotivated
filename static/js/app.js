@@ -2,13 +2,7 @@
  * @jsx React.DOM
  */
 
-var WEEKDAYS = function(){
-  var days = [];
-  for (var i = 0; i <= 6; i++) {
-    days.push("day" + (i + 1) % 7);
-  }
-  return days;
-}();
+var WEEKDAYS = ["day1", "day2", "day3", "day4", "day5", "day6", "day0"];
 
 var StayMotivatedTable = React.createClass({
   loadFromServer: function() {
@@ -40,11 +34,12 @@ var StayMotivatedTable = React.createClass({
   },
   saveNewTask: function(name, goal, feasibleDays) {
     // TODO replace this part with server side update, not using setState is evil
+    // TOOD why does this work without calling forceUpdate()?
     this.state.week.tasks.push({name: name, goal: goal, achievedDays: [], feasibleDays: feasibleDays});
     this.cancelNewTask();
   },
   handleDayClick: function(key, day) {
-    // TODO replace this part with server side update, not using setState and forceUpdate is evil
+    // TODO replace this part with server side update, not using setState() and forceUpdate() is evil
     var task = this.state.week.tasks[key];
     var dayIndex = jQuery.inArray(day, task.achievedDays);
     if (dayIndex >= 0) {
@@ -155,6 +150,7 @@ var Day = React.createClass({
     );
   }
 });
+
 
 var TaskForm = React.createClass({
   saveTask: function() {

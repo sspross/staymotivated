@@ -30,8 +30,11 @@ var StayMotivatedTable = React.createClass({
     }
   },
   deleteTask: function(taskKey) {
-    this.state.week.tasks.splice(taskKey, 1);
-    this.forceUpdate();
+    // this.state.week.tasks.splice(taskKey, 1);
+    var tmpweek = this.state.week;
+    tmpweek.tasks.splice(taskKey, 1);
+    this.setState({week: tmpweek});
+    // this.forceUpdate();
   },
   cancelNewTask: function() {
     this.setState({newTask: null});
@@ -39,27 +42,35 @@ var StayMotivatedTable = React.createClass({
   saveNewTask: function(taskKey, name, goal, feasibleDays) {
     // TODO replace this part with server side update, not using setState is evil
     // TOOD why does this work without calling forceUpdate()?
-    this.state.week.tasks.push({name: name, goal: goal, achievedDays: [], feasibleDays: feasibleDays});
-    this.cancelNewTask();
+    // this.state.week.tasks.push({name: name, goal: goal, achievedDays: [], feasibleDays: feasibleDays});
+    var tmpweek = this.state.week;
+    tmpweek.tasks.push({name: name, goal: goal, achievedDays: [], feasibleDays: feasibleDays});
+    this.setState({week: tmpweek, newTask: null})
+    // this.cancelNewTask();
   },
   saveTask: function(taskKey, name, goal, feasibleDays) {
     // TODO replace this part with server side update, not using setState is evil
-    var task = this.state.week.tasks[taskKey];
+    var tmpweek = this.state.week;
+    var task = tmpweek.tasks[taskKey];
     task.name = name;
     task.goal = goal;
     task.feasibleDays = feasibleDays;
-    this.forceUpdate();
+    this.setState({week: tmpweek})
+    // this.forceUpdate();
   },
   handleDayClick: function(taskKey, day) {
     // TODO replace this part with server side update, not using setState() and forceUpdate() is evil
-    var task = this.state.week.tasks[taskKey];
+    // var task = this.state.week.tasks[taskKey];
+    var tmpweek = this.state.week;
+    var task = tmpweek.tasks[taskKey];
     var dayIndex = jQuery.inArray(day, task.achievedDays);
     if (dayIndex >= 0) {
       task.achievedDays.splice(dayIndex, 1);
     } else {
       task.achievedDays.push(day);
     }
-    this.forceUpdate();
+    this.setState({week:tmpweek});
+    // this.forceUpdate();
   },
   render: function() {
     var tasks = [];

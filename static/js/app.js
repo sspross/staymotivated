@@ -176,10 +176,10 @@ var Task = React.createClass({
       var isCompleted = numAchieved >= this.props.goal ? true : false
       var isOverdone = isCompleted && numAchieved > this.props.goal ? true : false;
       var days = [];
-      WEEKDAYS.forEach(function(day) {
+      WEEKDAYS.forEach(function(day, i) {
         var feasible = jQuery.inArray(day, this.props.feasibleDays) >= 0 ? true : false;
         var achieved = jQuery.inArray(day, this.props.achievedDays) >= 0 ? true : false;
-        days.push(<Day taskKey={this.props.key} day={day} feasible={feasible} achieved={achieved} onDayClick={this.props.onDayClick} />);
+        days.push(<Day key={i} taskKey={this.props.key} day={day} feasible={feasible} achieved={achieved} onDayClick={this.props.onDayClick} />);
       }.bind(this));
       return (
         <tr className={isCompleted ? "success" : ""}>

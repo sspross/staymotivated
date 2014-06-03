@@ -26,7 +26,7 @@ var StayMotivatedTable = React.createClass({
   },
   addNewTask: function() {
     if (this.state.newTask === null) {
-      this.setState({newTask: <Task editable="true" onTaskCancel={this.cancelNewTask} onTaskSave={this.saveNewTask} />});
+      this.setState({newTask: <Task editable="true" onCancel={this.cancelNewTask} onSave={this.saveNewTask} />});
     }
   },
   deleteTask: function(taskKey) {
@@ -36,11 +36,19 @@ var StayMotivatedTable = React.createClass({
   cancelNewTask: function() {
     this.setState({newTask: null});
   },
-  saveNewTask: function(name, goal, feasibleDays) {
+  saveNewTask: function(taskKey, name, goal, feasibleDays) {
     // TODO replace this part with server side update, not using setState is evil
     // TOOD why does this work without calling forceUpdate()?
     this.state.week.tasks.push({name: name, goal: goal, achievedDays: [], feasibleDays: feasibleDays});
     this.cancelNewTask();
+  },
+  saveTask: function(taskKey, name, goal, feasibleDays) {
+    // TODO replace this part with server side update, not using setState is evil
+    var task = this.state.week.tasks[taskKey];
+    task.name = name;
+    task.goal = goal;
+    task.feasibleDays = feasibleDays;
+    this.forceUpdate();
   },
   handleDayClick: function(taskKey, day) {
     // TODO replace this part with server side update, not using setState() and forceUpdate() is evil
@@ -59,7 +67,7 @@ var StayMotivatedTable = React.createClass({
       var number = this.state.week.number;
       var year = this.state.week.year;
       this.state.week.tasks.forEach(function(task, i) {
-          tasks.push(<Task key={i} name={task.name} goal={task.goal} achievedDays={task.achievedDays} feasibleDays={task.feasibleDays} onDayClick={this.handleDayClick} onDelete={this.deleteTask} />);
+          tasks.push(<Task key={i} name={task.name} goal={task.goal} achievedDays={task.achievedDays} feasibleDays={task.feasibleDays} onSave={this.saveTask} onDayClick={this.handleDayClick} onDelete={this.deleteTask} />);
       }.bind(this));
     }
     return (
@@ -106,7 +114,7 @@ var StayMotivatedTable = React.createClass({
         </thead>
         <tbody>
           {this.state.newTask}
-          {tasks}
+          {tasks.reverse()} 
         </tbody>
       </table>
     );
@@ -127,8 +135,15 @@ var Task = React.createClass({
         feasibleDays.push(day);
       }
     }.bind(this));
-    this.props.onTaskSave(name, goal, feasibleDays);
+    this.props.onSave(this.props.key, name, goal, feasibleDays);
     this.setState({editable: false})
+  },
+  cancelTask: function(){
+    if(this.props.key !== undefined){
+      this.setState({editable: false})
+    } else {
+      this.props.onCancel();
+    }
   },
   makeEditable: function() {
     this.setState({editable: true}) 
@@ -137,21 +152,22 @@ var Task = React.createClass({
     if (this.state.editable) {
       var days = [];
       WEEKDAYS.forEach(function(day) {
-        days.push(<td className="day-col"><input type="checkbox" ref={day}></input></td>);
+        var feasible = jQuery.inArray(day, this.props.feasibleDays) >= 0 ? true : false;
+        days.push(<td className="day-col"><input type="checkbox" ref={day} defaultChecked={feasible}></input></td>);
       }.bind(this));
       return (
         <tr>
           <td></td>
           <td className="form-inline">
-            <input type="text" className="form-control input-sm" ref="taskName" placeholder="Task name..." value={this.props.name}></input>
+            <input type="text" className="form-control input-sm" ref="taskName" placeholder="Task name..." defaultValue={this.props.name}></input>
             <div className="pull-right btn-group">
               <button type="submit" className="btn btn-default btn-sm" onClick={this.saveTask}><span className="glyphicon glyphicon-floppy-disk"></span></button>
-              <a className="btn btn-default btn-sm" onClick={this.props.onTaskCancel}><span className="glyphicon glyphicon-ban-circle"></span></a>
+              <a className="btn btn-default btn-sm" onClick={this.cancelTask} href="#"><span className="glyphicon glyphicon-ban-circle"></span></a>
             </div>
           </td>
           {days}
           <td>
-            <input type="number" className="form-control input-sm" ref="goal" placeholder="Goal...">{this.props.goal}</input>
+            <input type="number" className="form-control input-sm" ref="goal" placeholder="Goal..." defaultValue={this.props.goal}>{this.props.goal}</input>
           </td>
         </tr>
       );
